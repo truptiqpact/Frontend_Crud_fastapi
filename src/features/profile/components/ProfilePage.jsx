@@ -18,7 +18,11 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-2xl">
-      <PageHeader title="My profile" subtitle="View and update your account." />
+      <PageHeader
+        title="My profile"
+        subtitle="View and update your account."
+        breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'My profile' }]}
+      />
       {error && (
         <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300">
           {error}
