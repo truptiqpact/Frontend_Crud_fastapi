@@ -1,1 +1,192 @@
-/* Starter demo styles removed. Global styles live in src/index.css + src/styles/. */
+/* [Member 1 - Auth & Home UI] Page-specific styles for the auth + home screens.
+   Loaded via @import in src/index.css. Reserves this file for the things
+   Tailwind utilities can't do cleanly: image-backed panels, the animated
+   aurora, floating colour orbs, the light sheen, and the grid overlays.
+   All keyframes live in index.css and are disabled under reduced-motion. */
+
+/* ==================================================================
+   AUTH BRAND PANEL  (the purple left side on desktop)
+   Layering, bottom -> top: mesh image -> aurora + orbs -> grid -> noise
+================================================================== */
+
+/* ---- Base mesh image: also hosts the light sheen + one slow orb ---- */
+.auth-mesh {
+  background-image: url("./assets/images/auth-mesh.svg");
+  background-size: cover;
+  background-position: center;
+}
+.auth-mesh::before,
+.auth-mesh::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+/* Diagonal light sweep that crosses the panel every few seconds */
+.auth-mesh::before {
+  top: -20%;
+  left: 0;
+  width: 38%;
+  height: 140%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.10),
+    transparent
+  );
+  filter: blur(6px);
+  transform: translateX(-130%) skewX(-18deg);
+  animation: sheen 11s ease-in-out infinite;
+}
+/* Large, slow indigo orb drifting through the middle */
+.auth-mesh::after {
+  width: 70%;
+  height: 70%;
+  top: 18%;
+  left: 22%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.45), transparent 65%);
+  filter: blur(50px);
+  mix-blend-mode: screen;
+  animation: orb-float-c 26s ease-in-out infinite;
+}
+
+/* ---- Grain texture overlay (static) ---- */
+.auth-noise {
+  background-image: url("./assets/images/noise.svg");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+}
+
+/* ---- Animated aurora + two drifting colour orbs ---- */
+.auth-aurora {
+  background:
+    radial-gradient(38% 48% at 18% 22%, rgba(168, 85, 247, 0.55), transparent 70%),
+    radial-gradient(42% 44% at 82% 28%, rgba(99, 102, 241, 0.5), transparent 70%),
+    radial-gradient(52% 50% at 50% 92%, rgba(236, 72, 153, 0.45), transparent 70%);
+  filter: blur(8px);
+  animation: aurora-drift 16s ease-in-out infinite alternate;
+}
+.auth-aurora::before,
+.auth-aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(44px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+/* Violet orb, top-left */
+.auth-aurora::before {
+  width: 58%;
+  height: 58%;
+  top: -12%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.65), transparent 65%);
+  animation: orb-float-a 18s ease-in-out infinite;
+}
+/* Pink orb, bottom-right */
+.auth-aurora::after {
+  width: 52%;
+  height: 52%;
+  bottom: -14%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.55), transparent 65%);
+  animation: orb-float-b 22s ease-in-out infinite;
+}
+
+/* Faint engineering grid, masked to fade at the edges, slowly panning */
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 78%);
+          mask-image: radial-gradient(ellipse at center, #000 35%, transparent 78%);
+  animation: grid-pan 60s linear infinite;
+}
+
+/* ---- Auth form card --------------------------------------------- */
+.auth-card {
+  backdrop-filter: blur(6px);
+}
+
+/* ==================================================================
+   HOME HERO BACKDROP  (subtle, sits behind the landing content)
+================================================================== */
+.home-aurora {
+  background:
+    radial-gradient(40% 42% at 12% 8%, rgba(168, 85, 247, 0.20), transparent 70%),
+    radial-gradient(42% 42% at 88% 0%, rgba(99, 102, 241, 0.18), transparent 72%),
+    radial-gradient(46% 46% at 60% 100%, rgba(236, 72, 153, 0.14), transparent 72%);
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+}
+.home-aurora::before,
+.home-aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(50px);
+}
+.home-aurora::before {
+  width: 42%;
+  height: 60%;
+  top: -6%;
+  left: 4%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.16), transparent 68%);
+  animation: orb-float-a 24s ease-in-out infinite;
+}
+.home-aurora::after {
+  width: 40%;
+  height: 58%;
+  top: 0;
+  right: 2%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.14), transparent 68%);
+  animation: orb-float-b 28s ease-in-out infinite;
+}
+
+.home-grid {
+  background-image:
+    linear-gradient(to right, rgba(100, 116, 139, 0.13) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.13) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse at top, #000 28%, transparent 72%);
+          mask-image: radial-gradient(ellipse at top, #000 28%, transparent 72%);
+  animation: grid-pan 80s linear infinite;
+}
+.dark .home-grid {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+}
+
+/* Soft, breathing glow behind the floating hero graphic */
+.hero-glow {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.35), transparent 65%);
+  filter: blur(28px);
+  animation: glow-pulse 7s ease-in-out infinite;
+}
+
+/* ==================================================================
+   Reduced-motion: freeze every ambient background animation.
+================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .auth-aurora,
+  .auth-aurora::before,
+  .auth-aurora::after,
+  .auth-mesh::before,
+  .auth-mesh::after,
+  .grid-overlay,
+  .home-aurora,
+  .home-aurora::before,
+  .home-aurora::after,
+  .home-grid,
+  .hero-glow {
+    animation: none !important;
+  }
+  .auth-mesh::before {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,14 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- [Member 1 - Auth & Home UI] App mark: stacked layers, echoing the hero graphic. -->
+  <defs>
+    <linearGradient id="lg" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a855f7" />
+      <stop offset="0.5" stop-color="#7c3aed" />
+      <stop offset="1" stop-color="#6366f1" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#lg)" />
+  <path d="M24 11l11 6.2-11 6.2-11-6.2L24 11z" fill="#fff" fill-opacity="0.95" />
+  <path d="M13 24.4l11 6.2 11-6.2" stroke="#fff" stroke-opacity="0.75" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M13 30.8l11 6.2 11-6.2" stroke="#fff" stroke-opacity="0.5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

@@ -1,3 +1,4 @@
+/* [Member 1 - Auth & Home UI] Global stylesheet entry (loaded by main.jsx). */
 @import "tailwindcss";
 
 /* Enable class-based dark mode (toggled by ThemeContext on <html class="dark">) */
@@ -5,3 +6,137 @@
 
 @import "./styles/variables.css";
 @import "./styles/globals.css";
+@import "./App.css"; /* page-specific styles (auth + home) */
+
+/* ==================================================================
+   Animation system
+   Lightweight, dependency-free keyframes used by the auth + home UI.
+   All of these are neutralised by the prefers-reduced-motion guard
+   in styles/globals.css, plus the explicit fallback at the bottom.
+================================================================== */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(4%, -3%, 0) scale(1.15); }
+  100% { transform: translate3d(-3%, 2%, 0) scale(1); }
+}
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes shake {
+  10%, 90%        { transform: translateX(-1px); }
+  20%, 80%        { transform: translateX(2px); }
+  30%, 50%, 70%   { transform: translateX(-4px); }
+  40%, 60%        { transform: translateX(4px); }
+}
+
+/* Utility classes ------------------------------------------------- */
+.anim-fade-up   { animation: fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-fade-in   { animation: fade-in 0.6s ease-out both; }
+.anim-scale-in  { animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-float     { animation: float-y 6s ease-in-out infinite; }
+.anim-shake     { animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+
+/* Stagger helpers (used on grouped entrances) */
+.anim-delay-1 { animation-delay: 0.08s; }
+.anim-delay-2 { animation-delay: 0.16s; }
+.anim-delay-3 { animation-delay: 0.24s; }
+.anim-delay-4 { animation-delay: 0.32s; }
+.anim-delay-5 { animation-delay: 0.40s; }
+
+/* Animated gradient text for headlines */
+.text-gradient {
+  background-image: linear-gradient(110deg, #7c3aed, #a855f7, #6366f1, #ec4899);
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s ease infinite;
+}
+
+/* ==================================================================
+   Background animation keyframes
+   Drive the living backdrop in App.css: drifting aurora, floating
+   colour orbs, a slow light sheen, a panning grid, and a pulsing glow.
+   GPU-friendly (transform / opacity only) and disabled below for
+   users who prefer reduced motion.
+================================================================== */
+
+/* Three orbs, each with its own drift path so they never sync up */
+@keyframes orb-float-a {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(8%, 10%) scale(1.12); }
+  66%  { transform: translate(-6%, 4%) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes orb-float-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-10%, -8%) scale(1.18); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes orb-float-c {
+  0%   { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(7%, -9%) scale(1.1); }
+  80%  { transform: translate(-8%, 6%) scale(0.92); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Slow diagonal light sweep across the brand panel */
+@keyframes sheen {
+  0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+  18%  { opacity: 0.55; }
+  55%  { opacity: 0; }
+  100% { transform: translateX(240%) skewX(-18deg); opacity: 0; }
+}
+
+/* Seamless drift of the line grid (loops because it moves one cell) */
+@keyframes grid-pan {
+  from { background-position: 0 0; }
+  to   { background-position: 46px 46px; }
+}
+
+/* Gentle breathing glow behind the hero graphic */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.08); }
+}
+
+/* Explicit rest state when users prefer reduced motion (belt + braces:
+   globals.css already shortens durations, this stops ambient looping). */
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .text-gradient,
+  .auth-aurora,
+  .auth-aurora::before,
+  .auth-aurora::after,
+  .auth-mesh::before,
+  .auth-mesh::after,
+  .grid-overlay,
+  .home-aurora,
+  .home-aurora::before,
+  .home-aurora::after,
+  .home-grid,
+  .hero-glow {
+    animation: none !important;
+  }
+  .text-gradient {
+    background-position: 0% 50%;
+  }
+}
