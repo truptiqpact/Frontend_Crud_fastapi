@@ -1,5 +1,5 @@
-// [Member 3 - Profile] Animated identity card with gradient banner + role badge.
-// Keeps the contract: <ProfileCard profile={profile} />
+// [Member 3 - Profile] Identity card: gradient banner with the avatar resting
+// on its lower edge (no clipping). Contract unchanged: <ProfileCard profile />
 import { motion } from 'framer-motion'
 import Card from '../../../components/ui/Card'
 import { getInitials } from '../../../utils/helpers'
@@ -20,15 +20,25 @@ export default function ProfileCard({ profile }) {
   const role = (profile?.role || 'user').toLowerCase()
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-      <Card className="overflow-hidden p-0">
-        <div className="relative h-24 bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-700" />
-        <div className="px-6 pb-6">
-          <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.1 }} className="-mt-12 mb-4">
-            <span className="grid h-20 w-20 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-violet-500 to-indigo-500 text-2xl font-semibold text-white shadow-lg dark:border-slate-800">
-              {getInitials(profile?.name || profile?.email || 'U')}
-            </span>
-          </motion.div>
+      {/* relative + NOT clipped: the avatar can sit over the banner edge */}
+      <Card className="relative p-0">
+        {/* banner: rounded top to match the card corners */}
+        <div className="h-24 rounded-t-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-700" />
+
+        {/* avatar pinned to the banner's bottom edge */}
+        <motion.span
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.1 }}
+          className="absolute left-6 top-24 grid h-20 w-20 -translate-y-1/2 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-violet-500 to-indigo-500 text-2xl font-semibold text-white shadow-lg dark:border-slate-800"
+        >
+          {getInitials(profile?.name || profile?.email || 'U')}
+        </motion.span>
+
+        {/* content: top padding leaves room for the overlapping avatar */}
+        <div className="px-6 pb-6 pt-14">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{profile?.name || '—'}</h2>
+
           <dl className="mt-4 grid gap-3 sm:grid-cols-2">
             <div className="flex items-start gap-2.5">
               <span className="mt-0.5 text-slate-400"><Mail /></span>
@@ -41,7 +51,11 @@ export default function ProfileCard({ profile }) {
               <span className="mt-0.5 text-slate-400"><Shield /></span>
               <div>
                 <dt className="text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">Role</dt>
-                <dd className="mt-0.5"><span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${BADGE[role] || BADGE[ROLES.USER]}`}>{profile?.role || 'user'}</span></dd>
+                <dd className="mt-0.5">
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${BADGE[role] || BADGE[ROLES.USER]}`}>
+                    {profile?.role || 'user'}
+                  </span>
+                </dd>
               </div>
             </div>
           </dl>
