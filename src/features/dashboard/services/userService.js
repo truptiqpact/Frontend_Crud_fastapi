@@ -1,4 +1,5 @@
 // [Member 2 - Dashboard] User CRUD against the FastAPI backend.
+// Depends on Member 1's api client + endpoint map.
 import api from '../../../services/api/axios'
 import { ENDPOINTS } from '../../../services/api/endpoints'
 
@@ -23,7 +24,7 @@ export const userService = {
     return data
   },
 
-  // PUT /users/{id}  (partial: name/email/password)
+  // PUT /users/{id}  (partial: name / email / password)
   async updateUser(id, payload) {
     const { data } = await api.put(ENDPOINTS.USERS.BY_ID(id), payload)
     return data

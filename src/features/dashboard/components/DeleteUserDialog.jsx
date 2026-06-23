@@ -26,6 +26,7 @@ export default function DeleteUserDialog({ open, user, onClose, onConfirm }) {
       open={open}
       onClose={onClose}
       title="Delete user"
+      size="sm"
       footer={
         <>
           <Button variant="secondary" onClick={onClose} disabled={submitting}>

@@ -1,4 +1,5 @@
 // [Member 2 - Dashboard] Loads + mutates the user list.
+// Search/pagination are handled in the UI (UserTable); this hook owns the data.
 import { useCallback, useEffect, useState } from 'react'
 import { userService } from '../services/userService'
 import { getErrorMessage } from '../../../services/api/axios'
