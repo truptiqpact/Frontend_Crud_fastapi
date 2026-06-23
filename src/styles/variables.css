@@ -1,0 +1,15 @@
+/* ------------------------------------------------------------------
+   Design tokens (shared by Member 3's UI kit).
+   Brand violet is carried over from the original starter accent.
+------------------------------------------------------------------- */
+:root {
+  --brand: #8b2fd6;
+  --brand-strong: #7322bd;
+  --brand-soft: rgba(139, 47, 214, 0.1);
+
+  --ring: rgba(139, 47, 214, 0.45);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+}
