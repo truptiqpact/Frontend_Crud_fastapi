@@ -1,4 +1,5 @@
 // [Member 2 - Dashboard] Create / edit user modal.
+// Uses Member 3's Input/Button + Member 1's validators.
 import { useEffect, useState } from 'react'
 import Modal from '../../../components/ui/Modal'
 import Input from '../../../components/ui/Input'
@@ -13,7 +14,14 @@ import {
 
 const EMPTY = { name: '', email: '', password: '', role: ROLES.USER }
 
-export default function UserFormModal({ open, mode, user, onClose, onCreate, onUpdate }) {
+export default function UserFormModal({
+  open,
+  mode,
+  user,
+  onClose,
+  onCreate,
+  onUpdate,
+}) {
   const isEdit = mode === 'edit'
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
@@ -42,7 +50,7 @@ export default function UserFormModal({ open, mode, user, onClose, onCreate, onU
       name: validateName(form.name),
       email: validateEmail(form.email),
     }
-    // Password required on create; optional on edit (only if provided)
+    // Password required on create; optional on edit (only validated if typed).
     if (!isEdit || form.password) e.password = validatePassword(form.password)
     return Object.fromEntries(Object.entries(e).filter(([, v]) => v))
   }
@@ -57,7 +65,6 @@ export default function UserFormModal({ open, mode, user, onClose, onCreate, onU
     setServerError(null)
     try {
       if (isEdit) {
-        // Backend update accepts name/email/password (partial)
         const payload = { name: form.name, email: form.email }
         if (form.password) payload.password = form.password
         await onUpdate(user.id, payload)
@@ -76,14 +83,14 @@ export default function UserFormModal({ open, mode, user, onClose, onCreate, onU
     <Modal
       open={open}
       onClose={onClose}
-      title={isEdit ? 'Edit user' : 'Add user'}
+      title={isEdit ? 'Edit member' : 'Add member'}
       footer={
         <>
           <Button variant="secondary" onClick={onClose} disabled={submitting}>
             Cancel
           </Button>
           <Button onClick={onSubmit} loading={submitting}>
-            {isEdit ? 'Save changes' : 'Create user'}
+            {isEdit ? 'Save changes' : 'Create member'}
           </Button>
         </>
       }
@@ -138,6 +145,7 @@ export default function UserFormModal({ open, mode, user, onClose, onCreate, onU
             </select>
           </div>
         )}
+        {/* allow Enter-to-submit without showing a duplicate button */}
         <button type="submit" className="hidden" aria-hidden="true" />
       </form>
     </Modal>

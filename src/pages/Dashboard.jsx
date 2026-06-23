@@ -1,14 +1,14 @@
 // [Member 2 - Dashboard] User management screen.
-//  - admin: stats + full table + create/edit/delete
+//  - admin: stats + searchable/paginated table + create/edit/delete
 //  - standard user: read-only view of their own record
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import PageHeader from '../components/common/PageHeader'
-import Button from '../components/ui/Button'
+import PageHeader from '../components/common/PageHeader' // (Member 3)
+import Button from '../components/ui/Button' // (Member 3)
 import Card from '../components/ui/Card'
 import Loader from '../components/ui/Loader'
-import { useAuth } from '../hooks/useAuth'
-import { ROUTES } from '../routes/routeConstants'
+import { useAuth } from '../hooks/useAuth' // (Member 1)
+import { ROUTES } from '../routes/routeConstants' // (Member 1)
 import { useUsers } from '../features/dashboard/hooks/useUsers'
 import UserTable from '../features/dashboard/components/UserTable'
 import StatsCards from '../features/dashboard/components/StatsCards'
@@ -19,10 +19,15 @@ export default function Dashboard() {
   const { isAdmin, user: me } = useAuth()
   const { users, loading, error, createUser, updateUser, deleteUser } = useUsers()
 
-  const [formState, setFormState] = useState({ open: false, mode: 'create', user: null })
+  const [formState, setFormState] = useState({
+    open: false,
+    mode: 'create',
+    user: null,
+  })
   const [deleteState, setDeleteState] = useState({ open: false, user: null })
 
-  const openCreate = () => setFormState({ open: true, mode: 'create', user: null })
+  const openCreate = () =>
+    setFormState({ open: true, mode: 'create', user: null })
   const openEdit = (u) => setFormState({ open: true, mode: 'edit', user: u })
   const closeForm = () => setFormState((s) => ({ ...s, open: false }))
 
@@ -32,7 +37,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="grid place-items-center py-20">
-        <Loader label="Loading users…" />
+        <Loader size="lg" label="Loading users…" />
       </div>
     )
   }
@@ -87,13 +92,16 @@ export default function Dashboard() {
         actions={<Button onClick={openCreate}>Add user</Button>}
       />
 
-      {error && (
-        <Card className="mb-6 p-4 text-sm text-red-600">{error}</Card>
-      )}
+      {error && <Card className="mb-6 p-4 text-sm text-red-600">{error}</Card>}
 
       <StatsCards users={users} />
 
-      <UserTable users={users} canManage onEdit={openEdit} onDelete={openDelete} />
+      <UserTable
+        users={users}
+        canManage
+        onEdit={openEdit}
+        onDelete={openDelete}
+      />
 
       <UserFormModal
         open={formState.open}

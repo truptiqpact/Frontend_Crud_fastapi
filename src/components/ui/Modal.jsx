@@ -1,7 +1,21 @@
-// [Member 3 - UI Kit] Accessible-ish modal: overlay, Esc to close, title.
+// [Member 2 - UI Kit] Modal: overlay, Esc to close, title, footer, size.
 import { useEffect } from 'react'
+import { cn } from '../../utils/helpers'
 
-export default function Modal({ open, onClose, title, children, footer }) {
+const SIZES = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+}
+
+export default function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+  size = 'md',
+}) {
   useEffect(() => {
     if (!open) return
     const onKey = (e) => e.key === 'Escape' && onClose?.()
@@ -22,11 +36,18 @@ export default function Modal({ open, onClose, title, children, footer }) {
       aria-modal="true"
       aria-label={title}
     >
+      {/* overlay */}
       <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800">
+      {/* panel */}
+      <div
+        className={cn(
+          'relative z-10 w-full rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800',
+          SIZES[size],
+        )}
+      >
         {title && (
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3 dark:border-slate-700">
             <h2 className="text-base font-semibold text-slate-900 dark:text-white">

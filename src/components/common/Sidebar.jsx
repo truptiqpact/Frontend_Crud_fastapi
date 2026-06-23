@@ -2,7 +2,6 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { AppContext } from '../../context/AppContext'
-import { useAuth } from '../../hooks/useAuth'
 import { ROUTES } from '../../routes/routeConstants'
 import { cn } from '../../utils/helpers'
 
@@ -13,7 +12,6 @@ const LINKS = [
 
 export default function Sidebar() {
   const { sidebarOpen, closeSidebar } = useContext(AppContext)
-  const { isAdmin } = useAuth()
 
   const linkClass = ({ isActive }) =>
     cn(
@@ -46,12 +44,6 @@ export default function Sidebar() {
             </NavLink>
           ))}
         </nav>
-
-        {isAdmin && (
-          <p className="mt-4 px-3 text-xs font-medium uppercase tracking-wide text-slate-400">
-            Admin
-          </p>
-        )}
       </aside>
     </>
   )
